@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Division">
+    <Position X="8.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAABAAAAAAAAjAAAAAAAA=</HashCode>
+      <FileName>Division.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Multiplicacion">
+    <Position X="7" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAjAAAAAAgA=</HashCode>
+      <FileName>Multiplicacion.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Resta">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAjAAQAAAAA=</HashCode>
+      <FileName>Resta.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Resto_division">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAjAAQAAAAA=</HashCode>
+      <FileName>Resto_division.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Suma">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAQAAAAAAAAAAAAAAAAjAAAAAAAA=</HashCode>
+      <FileName>Suma.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
