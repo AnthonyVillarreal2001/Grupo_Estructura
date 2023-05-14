@@ -1,4 +1,6 @@
-﻿  Fraccion.cpp
+﻿  Calculos.cpp
   main.cpp
   Generando código...
-  Quebrados Suma.vcxproj -> C:\Users\antho\OneDrive\Documents\Repositorios\Grupo_Estructura\Quebrados Suma\x64\Debug\Quebrados Suma.exe
+main.obj : error LNK2019: símbolo externo "public: virtual class Fraccion<float> __cdecl Calculos<float>::calculo(class Fraccion<float>,class Fraccion<float>)" (?calculo@?$Calculos@M@@UEAA?AV?$Fraccion@M@@V2@0@Z) sin resolver al que se hace referencia en la función main
+main.obj : error LNK2001: símbolo externo "public: virtual float __cdecl Calculos<float>::calculo(float,float)" (?calculo@?$Calculos@M@@UEAAMMM@Z) sin resolver
+C:\Users\antho\OneDrive\Documents\Repositorios\Grupo_Estructura\Quebrados Suma\x64\Debug\Quebrados Suma.exe : fatal error LNK1120: 2 externos sin resolver
