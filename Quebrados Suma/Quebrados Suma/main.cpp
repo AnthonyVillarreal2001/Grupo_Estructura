@@ -1,3 +1,15 @@
+/* UNIVERSIDAD DE LAS FUERZAS ARMADAS (ESPE)
+Nombre del programa: Suma Fracciones TDA
+Autores: Carlos Campoverde, Anthony Villarreal, Ariel Pozo
+Fecha de creacion: 08/05/2023
+Fecha de modificacion: 08/05/2023
+9671 ESTRUCTURA DE DATOS
+*/
+
+
+
+
+
 #include <iostream>
 #include "Validacion.h"
 #include "Calculos.cpp"
