@@ -1,3 +1,14 @@
+/* UNIVERSIDAD DE LAS FUERZAS ARMADAS (ESPE)
+Nombre del programa: Operaciones básicas con TDA
+Autores: Carlos Campoverde, Anthony Villarreal, Ariel Pozo
+Fecha de creacion: 05/05/2023
+Fecha de modificacion: 05/05/2023
+9671 ESTRUCTURA DE DATOS
+*/
+
+
+
+
 #include <iostream>
 #include "Suma.h"
 #include "Resta.h"
