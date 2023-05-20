@@ -1,21 +1,19 @@
-#if !defined(__Class_Diagram_1_Fraccion_h)
-#define __Class_Diagram_1_Fraccion_h
+#pragma once
 
+template<typename T>
 class Fraccion
 {
 public:
-   float getNumerador(void);
-   void setNumerador(float newNumerador);
-   float getDenominador(void);
-   void setDenominador(float newDenominador);
-   Fraccion(float num, float den);
-   ~Fraccion();
+	T getNumerador(void);
+	void setNumerador(T newNumerador);
+	T getDenominador(void);
+	void setDenominador(T newDenominador);
+	Fraccion(T num, T den);
+	~Fraccion();
 
 protected:
 private:
-   float numerador;
-   float denominador;
+	T numerador;
+	T denominador;
 
 };
-
-#endif

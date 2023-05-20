@@ -1,4 +1,3 @@
-﻿  Fraccion.cpp
-  main.cpp
-  Generando código...
+﻿  Validacion.cpp
+C:\Users\antho\OneDrive\Documents\Repositorios\Grupo_Estructura\Quebrados Suma\Quebrados Suma\Validacion.cpp(36,11): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
   Quebrados Suma.vcxproj -> C:\Users\antho\OneDrive\Documents\Repositorios\Grupo_Estructura\Quebrados Suma\x64\Debug\Quebrados Suma.exe

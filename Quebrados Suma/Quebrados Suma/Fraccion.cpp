@@ -1,35 +1,41 @@
 #include "Fraccion.h"
 
-float Fraccion::getNumerador(void)
+template<typename T>
+T Fraccion<T>::getNumerador(void)
 {
-   return numerador;
+	return numerador;
 }
 
-void Fraccion::setNumerador(float newNumerador)
+template<typename T>
+void Fraccion<T>::setNumerador(T newNumerador)
 {
-   this->numerador = newNumerador;
+	this->numerador = newNumerador;
 }
 
-float Fraccion::getDenominador(void)
+template<typename T>
+T Fraccion<T>::getDenominador(void)
 {
-   return denominador;
+	return denominador;
 }
 
-void Fraccion::setDenominador(float newDenominador)
+template<typename T>
+void Fraccion<T>::setDenominador(T newDenominador)
 {
-   this->denominador = newDenominador;
+	this->denominador = newDenominador;
 }
 
-Fraccion::Fraccion(float num, float den)
+template<typename T>
+Fraccion<T>::Fraccion(T num, T den)
 {
-   // TODO : implement
-   this->numerador=num;
-   this->denominador=den;
+	// TODO : implement
+	this->numerador = num;
+	this->denominador = den;
 }
 
-Fraccion::~Fraccion()
+template<typename T>
+Fraccion<T>::~Fraccion()
 {
-   // TODO : implement
+	// TODO : implement
 	numerador = 0;
 	denominador = 1;
 }
