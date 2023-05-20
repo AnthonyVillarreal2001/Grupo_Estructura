@@ -1,3 +1,13 @@
+/* UNIVERSIDAD DE LAS FUERZAS ARMADAS (ESPE)
+Nombre del programa: Operadores sobrecargados
+Autores: Carlos Campoverde, Anthony Villarreal, Ariel Pozo
+Fecha de creacion: 10/05/2023
+Fecha de modificacion: 10/05/2023
+9671 ESTRUCTURA DE DATOS
+*/
+
+
+
 #include <iostream>
 #include "Operador.cpp"
 using namespace std;
