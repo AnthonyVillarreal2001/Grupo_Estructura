@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Deber_Matrices.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Operacion.cpp" />
   </ItemGroup>
   <ItemGroup>
