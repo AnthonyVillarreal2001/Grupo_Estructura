@@ -1,3 +1,11 @@
+/* UNIVERSIDAD DE LAS FUERZAS ARMADAS (ESPE)
+Nombre del programa: Uso de memoria estatica en matrices
+Autores: Carlos Campoverde, Anthony Villarreal, Ariel Pozo
+Fecha de creacion: 19/05/2023
+Fecha de modificacion: 19/05/2023
+9671 ESTRUCTURA DE DATOS
+*/
+
 #include <iostream>
 #include "TorreHanoi.cpp"
 

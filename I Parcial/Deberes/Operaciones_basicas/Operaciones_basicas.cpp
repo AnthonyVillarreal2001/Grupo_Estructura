@@ -6,9 +6,6 @@ Fecha de modificacion: 05/05/2023
 9671 ESTRUCTURA DE DATOS
 */
 
-
-
-
 #include <iostream>
 #include "Suma.h"
 #include "Resta.h"
