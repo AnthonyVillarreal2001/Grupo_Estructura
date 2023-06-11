@@ -15,6 +15,7 @@ class Menu {
 public:
     Menu();
     void ejecutar();
+    void buscarPorCedula();
 private:
     /**
     @brief Validar la cédula proporcionada.

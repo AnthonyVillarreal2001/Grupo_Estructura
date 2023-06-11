@@ -54,10 +54,17 @@ void Menu<T>::ejecutar() {
             system("cls");
             break;
         case 5:
+            buscarPorCedula();
+            system("pause");
+            system("cls");
+            break;
+
+        case 6:
             cout << "Saliendo del programa..." << endl;
             system("pause");
             system("cls");
             break;
+
         default:
             cout << "Opcion invalida. Por favor, ingrese una opcion valida." << endl;
             system("pause");
@@ -68,6 +75,26 @@ void Menu<T>::ejecutar() {
     const string nombreArchivo = "registros.txt";
     guardarRegistrosEnArchivo(nombreArchivo);
     
+}
+template<typename T>
+void Menu<T>::buscarPorCedula()
+{
+    std::string cedula;
+    std::cout << "Ingrese el número de cédula: ";
+    std::cin >> cedula;
+
+    std::ifstream archivo("registros.txt"); // Abrir el archivo
+    std::string linea;
+
+    while (std::getline(archivo, linea)) { // Leer cada línea del archivo
+        // Verificar si la línea contiene la cédula buscada
+        if (linea.find(cedula) != std::string::npos) {
+            std::cout << linea << std::endl; // Mostrar la línea encontrada
+            // Si hay más campos asociados a la cédula, puedes leerlos aquí
+        }
+    }
+
+    archivo.close(); // Cerrar el archivo
 }
 
 template<typename T>
