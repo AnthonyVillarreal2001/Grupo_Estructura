@@ -54,12 +54,6 @@ void Menu<T>::ejecutar() {
             system("cls");
             break;
         case 5:
-            buscarPorCedula();
-            system("pause");
-            system("cls");
-            break;
-
-        case 6:
             cout << "Saliendo del programa..." << endl;
             system("pause");
             system("cls");
