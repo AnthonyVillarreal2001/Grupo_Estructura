@@ -12,6 +12,9 @@ Proyecto 1er Parcial- Registro y control de personal
 #include <string>
 #include <ctime>
 #include <regex>
+#include <chrono>
+#include <sstream>
+#pragma warning(disable : 4996)
 
 using namespace std;
 
@@ -25,7 +28,7 @@ template<typename T>
 void Menu<T>::ejecutar() {
     
     int opcion = 0;
-    while (opcion != 5) {
+    while (opcion != 6) {
         mostrarMenuPrincipal();
         cin >> opcion;
 
@@ -51,7 +54,13 @@ void Menu<T>::ejecutar() {
             system("pause");
             system("cls");
             break;
+        
         case 5:
+            buscarPorCedula();
+            system("pause");
+            system("cls");
+            break;
+        case 6:
             cout << "Saliendo del programa..." << endl;
             system("pause");
             system("cls");
@@ -67,6 +76,62 @@ void Menu<T>::ejecutar() {
     guardarRegistrosEnArchivo(nombreArchivo);
     
 }
+template<typename T>
+void Menu<T>::buscarPorCedula()
+{
+    std::string cedula;
+    std::cout << "Ingrese el numero de cedula: ";
+    std::cin >> cedula;
+
+    std::ifstream archivo("registros.txt"); // Abrir el archivo
+    std::string linea;
+
+    while (std::getline(archivo, linea)) { // Leer cada línea del archivo
+        // Verificar si la línea contiene la cédula buscada
+        if (linea.find(cedula) != std::string::npos) {
+            std::cout << linea << std::endl; // Mostrar la línea encontrada
+            // Si hay más campos asociados a la cédula, puedes leerlos aquí
+        }
+    }
+
+    archivo.close(); // Cerrar el archivo
+}
+
+template<typename T>
+void Menu<T>::buscarPorEdad()
+{
+    int edad;
+    std::cout << "Ingrese la edad a buscar: ";
+    std::cin >> edad;
+
+    std::ifstream archivo("registros.txt"); // Abrir el archivo
+    std::string linea;
+
+    while (std::getline(archivo, linea)) { // Leer cada línea del archivo
+        std::istringstream iss(linea);
+        std::string cedula, nombre, fechaNacimiento, edadStr;
+        std::getline(iss, cedula, '/');
+        std::getline(iss, nombre, '/');
+        std::getline(iss, fechaNacimiento, '/');
+        std::getline(iss, edadStr, '/');
+
+        int edadUsuario = std::stoi(edadStr);
+
+        // Verificar si la edad coincide con la buscada
+        if (edadUsuario == edad) {
+            std::cout << "Cedula: " << cedula << std::endl;
+            std::cout << "Nombre: " << nombre << std::endl;
+            std::cout << "Fecha de nacimiento: " << fechaNacimiento << std::endl;
+            std::cout << "Edad: " << edadUsuario << std::endl;
+            // Si hay más campos asociados al usuario, puedes mostrarlos aquí
+            std::cout << std::endl;
+        }
+    }
+
+    archivo.close(); // Cerrar el archivo
+}
+
+
 
 template<typename T>
 bool esMayorDe18(const T& fechaNacimiento) {
@@ -225,7 +290,8 @@ void Menu<T>::mostrarMenuPrincipal() {
     cout << "2. Ingresar con cedula" << endl;
     cout << "3. Mostrar registros" << endl;
     cout << "4. Eliminar por cedula" << endl;
-    cout << "5. Salir" << endl;
+    cout << "5. Buscar por cedula" << endl;
+    cout << "6. Salir" << endl;
     cout << "Ingrese su opcion: ";
 }
 
@@ -239,51 +305,130 @@ void Menu<T>::mostrarMenuRegistroUsuario() {
     cout << "Ingrese su opcion: ";
 }
 
+
 template<typename T>
 void Menu<T>::registrarNuevoUsuario() {
     T cedula;
     bool cedulaValida = false;
-    
-    while (!cedulaValida) {
+    int intentosFallidos = 0;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descartar caracteres residuales en el búfer
+
+    while (!cedulaValida && intentosFallidos < 3) {
+        if (intentosFallidos > 0) {
+            cout << "Cedula invalida. Ingrese una cedula valida:" << endl;
+        }
         cout << "Ingrese la cedula: ";
-        cin.ignore();
         getline(cin, cedula);
 
-        if (!validarCedula(cedula)) {
-            cout << "Cedula invalida. Ingrese una cedula valida." << endl;
-        }
-        else {
+        if (validarCedula(cedula)) {
             cedulaValida = true;
         }
+        else {
+            intentosFallidos++;
+            cedulaValida = false;
+        }
+    }
+
+    if (!cedulaValida) {
+        cout << "Se han superado el numero maximo de intentos fallidos. Saliendo del programa." << endl;
+        return;
     }
 
     if (listaPersonal.existeUsuario(cedula)) {
         cout << "Ya existe un usuario registrado con la cedula " << cedula << "." << endl;
         return;
     }
+    
     string fechaNacimiento;
+
+
     bool fechaValida = false;
     while (!fechaValida) {
         cout << "Ingrese la fecha de nacimiento (YYYY-MM-DD): ";
         getline(cin, fechaNacimiento);
+
         // Validar el formato "YYYY-MM-DD"
         regex fechaRegex(R"(\d{4}-\d{2}-\d{2})");
         if (!regex_match(fechaNacimiento, fechaRegex)) {
-            cout << "Formato de fecha incorrecto. Ingrese la fecha en el formato YYYY-MM-DD." << endl;
+            cout << "Formato de fecha incorrecto. Ingrese la fecha en el formato YYYY-MM-DD. (AÑO-MES-DIA)" << endl;
         }
         else {
-            if (!esMayorDe18(fechaNacimiento)) {
-                cout << "El usuario debe ser mayor de 18 años para ser registrado." << endl;
+            // Obtener la fecha actual
+            auto ahora = chrono::system_clock::now();
+            time_t ahoraTime = chrono::system_clock::to_time_t(ahora);
+            tm* fechaActual = localtime(&ahoraTime);
+
+            // Extraer el año, mes y día de la fecha de nacimiento ingresada
+            int anioNacimiento = stoi(fechaNacimiento.substr(0, 4));
+            int mesNacimiento = stoi(fechaNacimiento.substr(5, 2));
+            int diaNacimiento = stoi(fechaNacimiento.substr(8, 2));
+
+            // Crear una estructura tm para la fecha de nacimiento
+            tm fechaNac;
+            fechaNac.tm_year = anioNacimiento - 1900;  // Año - 1900
+            fechaNac.tm_mon = mesNacimiento - 1;       // Mes (0 - 11)
+            fechaNac.tm_mday = diaNacimiento;          // Día
+
+            // Convertir la fecha de nacimiento a un objeto time_t
+            time_t fechaNacTime = mktime(&fechaNac);
+
+            // Verificar si la fecha es válida
+            if (fechaNac.tm_year != anioNacimiento - 1900 ||
+                fechaNac.tm_mon != mesNacimiento - 1 ||
+                fechaNac.tm_mday != diaNacimiento) {
+                cout << "Fecha de nacimiento no valida." << endl;
+            }
+            else if (fechaNacTime > ahoraTime) {
+                cout << "La fecha de nacimiento no puede ser en el futuro." << endl;
             }
             else {
-                fechaValida = true;
+                // Verificar si el año es bisiesto
+                bool esBisiesto = ((anioNacimiento % 4 == 0 && anioNacimiento % 100 != 0) || (anioNacimiento % 400 == 0));
+
+                // Verificar los días en el mes
+                if ((mesNacimiento == 4 || mesNacimiento == 6 || mesNacimiento == 9 || mesNacimiento == 11) && diaNacimiento > 30) {
+                    cout << "El mes " << mesNacimiento << " solo tiene 30 días." << endl;
+                }
+                else if (mesNacimiento == 2) {
+                    if (esBisiesto && diaNacimiento > 29) {
+                        cout << "El mes de febrero en el año bisiesto solo tiene 29 dias." << endl;
+                    }
+                    else if (!esBisiesto && diaNacimiento > 28) {
+                        cout << "El mes de febrero en el año no bisiesto solo tiene 28 dias." << endl;
+                    }
+                    else {
+                        // Calcular la edad en años
+                        int edad = fechaActual->tm_year + 1900 - anioNacimiento;
+
+                        // Verificar si la edad está en el rango permitido (18-65 años)
+                        if (edad >= 18 && edad <= 65) {
+                            fechaValida = true;
+                        }
+                        else {
+                            cout << "El usuario debe tener entre 18 y 65 años para ser registrado." << endl;
+                        }
+                    }
+                }
+                else {
+                    // Calcular la edad en años
+                    int edad = fechaActual->tm_year + 1900 - anioNacimiento;
+
+                    // Verificar si la edad está en el rango permitido (18-65 años)
+                    if (edad >= 18 && edad <= 65) {
+                        fechaValida = true;
+                    }
+                    else {
+                        cout << "El usuario debe tener entre 18 y 65 años para ser registrado." << endl;
+                    }
+                }
             }
         }
     }
 
     int edadStr = calcularEdad(fechaNacimiento);
     string edad = to_string(edadStr);
-    cout << "Tu edad es: " << edad << " años." << endl;
+    cout << "Tu edad es: " << edad << " anios." << endl;
 
     string nombre;
     regex nombreRegex("[A-Za-z ]+"); //expresión para validar cadenas
@@ -297,31 +442,44 @@ void Menu<T>::registrarNuevoUsuario() {
 
     listaPersonal.agregarRegistro(cedula, nombre, fechaNacimiento, edad, "", "", "");
     cout << "Se registro al usuario con cedula " << cedula << endl;
-}
 
+    // Guardar en el archivo registros.txt
+    ofstream archivo("registros.txt", ios::app);
+    if (archivo.is_open()) {
+        archivo << cedula << "," << nombre << "," << fechaNacimiento << "," << edad << endl;
+        archivo.close();
+        cout << "La informacion del usuario se ha guardado en el archivo registros.txt." << endl;
+    }
+    else {
+        cout << "Error al abrir el archivo registros.txt." << endl;
+    }
+}
 template<typename T>
 void Menu<T>::ingresarConCedula() {
     T cedula;
     bool cedulaValida = false;
+    bool usuarioExiste = false;
+    int opcionRegistroUsuario = 0;
 
-    while (!cedulaValida) {
-        cout << "Ingrese la cedula: ";
-        cin.ignore();
-        getline(cin, cedula);
+    cout << "Ingrese la cedula: ";
+    cin.ignore();
+    getline(cin, cedula);
 
+    while (!validarCedula(cedula) || !listaPersonal.existeUsuario(cedula)) {
         if (!validarCedula(cedula)) {
             cout << "Cedula invalida. Ingrese una cedula valida." << endl;
         }
-        else {
-            cedulaValida = true;
+        else if (!listaPersonal.existeUsuario(cedula)) {
+            cout << "El usuario no existe. Registre al usuario antes de registrar la hora de entrada, salida o almuerzo." << endl;
+            opcionRegistroUsuario = 4;
+            break; 
         }
-    }
-    if (!listaPersonal.existeUsuario(cedula)) {
-        cout << "El usuario no existe. Registre al usuario antes de registrar la hora de entrada, salida o almuerzo." << endl;
-        return;
+
+        cout << "Ingrese la cedula: ";
+        getline(cin, cedula);
     }
 
-    int opcionRegistroUsuario = 0;
+    
     while (opcionRegistroUsuario != 4) {
         mostrarMenuRegistroUsuario();
         cin >> opcionRegistroUsuario;
@@ -363,12 +521,59 @@ void Menu<T>::ingresarConCedula() {
     }
 }
 
+
+
 template<typename T>
 void Menu<T>::mostrarRegistros() {
     listaPersonal.mostrarRegistros();
 }
 
+
 template<typename T>
+void Menu<T>::eliminarRegistroPorCedula() {
+    cout << "Ingrese la cedula del usuario que desea eliminar: ";
+    T cedula;
+    cin >> cedula;
+
+    Registro<T>* registroActual = listaPersonal.obtenerPrimerRegistro();
+    Registro<T>* registroAnterior = nullptr;
+    bool encontrado = false;
+
+    while (registroActual != nullptr) {
+        if (registroActual->cedula == cedula) {
+            encontrado = true;
+            break;
+        }
+        registroAnterior = registroActual;
+        registroActual = registroActual->siguiente;
+    }
+
+    if (encontrado) {
+        listaPersonal.eliminarRegistro(cedula);
+
+        ofstream archivo("registros.txt");
+        if (archivo.is_open()) {
+            Registro<T>* registro = listaPersonal.obtenerPrimerRegistro();
+            while (registro != nullptr) {
+                archivo << registro->cedula << "," << registro->nombre << "," << registro->edad << endl;
+                registro = registro->siguiente;
+            }
+            archivo.close();
+            cout << "Registro eliminado exitosamente." << endl;
+        }
+        else {
+            cout << "No se pudo abrir el archivo de registros." << endl;
+        }
+    }
+    else {
+        cout << "No se encontro un registro con la cedula especificada." << endl;
+    }
+}
+
+
+
+
+/*template<typename T>
 void Menu<T>::eliminarRegistroPorCedula() {
     T cedula;
     cout << "Ingrese la cedula del usuario a eliminar: ";
@@ -387,4 +592,4 @@ void Menu<T>::eliminarRegistroPorCedula() {
 
     listaPersonal.eliminarRegistro(cedula);
     cout << "Se ha eliminado el registro del usuario con cedula " << cedula << endl;
-}
+}*/
